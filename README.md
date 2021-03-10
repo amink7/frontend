@@ -463,8 +463,8 @@ Crearemos dos componentes llamados `Nav.svelte` y `Contenido.svelte`. Debe estar
   <!-- Se eliminan etiquetas html para resaltar lo esencial -->
   <!-- Consulta el código fuente. -->       
   <Link to="/">Inicio</Link>
-  <Link to="/articulos">Artículos</Link>
-  <Link to="/clientes">Clientes</Link>
+  <Link to="/armas">Artículos</Link>
+  <Link to="/soldados">Soldados</Link>
 </nav>
 ```
 
@@ -476,8 +476,8 @@ El componente `Nav` será la barra de navegación (`nav`), con los enlaces a las
 <script>
   import { Route } from "svelte-routing";
   import Inicio from "./Inicio.svelte";
-  import Articulos from "./Articulos.svelte";
-  import Clientes from "./Clientes.svelte";
+  import Arma from "./Armas.svelte";
+  import Soldado from "./Soldados.svelte";
 </script>
 
 <style>
@@ -489,8 +489,8 @@ El componente `Nav` será la barra de navegación (`nav`), con los enlaces a las
   <!-- Se eliminan etiquetas html para resaltar lo esencial -->
   <!-- Consulta el código fuente. --> 
   <Route path="/" component={Inicio} />
-  <Route path="/articulos" component={Articulos} />
-  <Route path="/clientes" component={Clientes} />
+  <Route path="/armas" component={Armas} />
+  <Route path="/soldados" component={Soldados} />
 </main>
 ```
 
@@ -502,7 +502,7 @@ Dentro del componente anterior `Contenido` podrán renderizarse distintos compon
 
 - **Inicio**
 - **Artículos**
-- **Clientes**
+- **Soldados**
 
 **`Inicio.svelte`**
 
@@ -520,9 +520,9 @@ Dentro del componente anterior `Contenido` podrán renderizarse distintos compon
 Este componente mostrará información acerca de la aplicación. Sólo posee código HTML y CSS. No necesita solicitar datos al servidor. Por tanto su carga es inmediata, y por este motivo lo mostraremos nada más iniciarse la aplicación. Ello permite una carga inicial de la aplicación instantánea.
 
 
-**`Articulos.svelte`**
+**`Armas.svelte`**
 
-![Articulos](articulos.png)
+![Armas](armas.png)
 
  ```html
  <script>
@@ -530,16 +530,16 @@ Este componente mostrará información acerca de la aplicación. Sólo posee có
   import { jsonData }            from "./store.js";
 
   import Buscar                  from "./Buscar.svelte";
-  import Articulo                from "./Articulo.svelte";
+  import Arma                from "./Arma.svelte";
   import Boton                   from "./Boton.svelte";
 
   const URL = getContext("URL");
 
   let busqueda = "";
-  let articulo = {};
+  let arma = {};
 
   onMount(async () => {
-    const response = await fetch(URL.articulos);
+    const response = await fetch(URL.armas);
     const data = await response.json();
     $jsonData = data;
   });
@@ -565,30 +565,30 @@ Este componente mostrará información acerca de la aplicación. Sólo posee có
 <Buscar bind:busqueda />
 
 <div class="container">
-  <Articulo bind:articulo>
+  <Arma bind:arma>
     <div style="text-align: right">
-      <Boton documento={articulo} tipo="insertar" coleccion="articulos" />
+      <Boton documento={arma} tipo="insertar" coleccion="arma" />
     </div>
-  </Articulo>
+  </Arma>
 </div>
 
 <div class="container">
-  {#each datos as articulo}
-    <Articulo {articulo}>
+  {#each datos as arma}
+    <Arma {arma}>
       <div style="text-align: right">
-        <Boton documento={articulo} tipo="modificar" coleccion="articulos" />
-        <Boton documento={articulo} tipo="eliminar"  coleccion="articulos" />
+        <Boton documento={arma} tipo="modificar" coleccion="armas" />
+        <Boton documento={arma} tipo="eliminar"  coleccion="armas" />
       </div>
-    </Articulo>
+    </Arma>
   {/each}
 </div>
 ```
 
 
 
-**`Clientes.svelte`**
+**`Soldados.svelte`**
 
-![Clientes](clientes.png)
+![Soldados](soldados.png)
 
 ```html
 <script>
@@ -596,16 +596,16 @@ Este componente mostrará información acerca de la aplicación. Sólo posee có
   import { jsonData }            from "./store.js";
 
   import Buscar                  from "./Buscar.svelte";
-  import Cliente                 from "./Cliente.svelte";
+  import Soldado                 from "./Soldado.svelte";
   import Boton                   from "./Boton.svelte";
 
   const URL = getContext("URL");
 
   let busqueda = "";
-  let cliente = {};
+  let soldado = {};
 
   onMount(async () => {
-    const response = await fetch(URL.clientes);
+    const response = await fetch(URL.soldados);
     const data = await response.json();
     $jsonData = data;
   });
@@ -631,21 +631,21 @@ Este componente mostrará información acerca de la aplicación. Sólo posee có
 <Buscar bind:busqueda />
 
 <div class="container">
-  <Cliente bind:cliente>
+  <Soldado bind:soldado>
     <div style="text-align: right">
-      <Boton documento={cliente} tipo="insertar" coleccion="clientes" />
+      <Boton documento={soldado} tipo="insertar" coleccion="soldados" />
     </div>
-  </Cliente>
+  </Soldado>
 </div>
 
 <div class="container">
-  {#each datos as cliente}
-    <Cliente {cliente}>
+  {#each datos as soldado}
+    <Soldado {soldado}>
       <div style="text-align: right">
-        <Boton documento={cliente} tipo="modificar" coleccion="clientes" />
-        <Boton documento={cliente} tipo="eliminar" coleccion="clientes" />
+        <Boton documento={soldado} tipo="modificar" coleccion="soldados" />
+        <Boton documento={soldado} tipo="eliminar" coleccion="soldados" />
       </div>
-    </Cliente>
+    </Soldado>
   {/each}
 </div>
 ```
@@ -654,11 +654,11 @@ Este componente mostrará información acerca de la aplicación. Sólo posee có
 
 ## Otros componentes
 
-**`Articulo.svelte`**
+**`Arma.svelte`**
 
 ```html
 <script>
-  export let articulo = {};
+  export let arma = {};
 </script>
 
 <style>
@@ -667,24 +667,24 @@ Este componente mostrará información acerca de la aplicación. Sólo posee có
 </style>
 
 <div class="card">
-  <input bind:value={articulo.nombre} class="title" />
+  <input bind:value={arma.nombre} class="title" />
   <input
     type="number"
     min="0"
     max="9999.99"
     step=".01"
-    bind:value={articulo.precio} />  €
+    bind:value={arma.precio} />  €
   <slot />
 </div>
 ```
 
 
 
-**`Cliente.svelte`**
+**`Soldado.svelte`**
 
 ```html
 <script>
-  export let cliente = {};
+  export let soldado = {};
 </script>
 
 <style>
@@ -693,8 +693,8 @@ Este componente mostrará información acerca de la aplicación. Sólo posee có
 </style>
 
 <div class="card">
-  <input bind:value={cliente.nombre} class="title" />
-  <input bind:value={cliente.apellidos} class="title" />
+  <input bind:value={soldado.nombre} class="title" />
+  <input bind:value={soldado.apellidos} class="title" />
   <slot />
 </div>
 ```
@@ -711,7 +711,7 @@ Este componente mostrará información acerca de la aplicación. Sólo posee có
   import { jsonData }            from "./store.js";
 
   export let tipo = "insertar";        // insertar, modificar, eliminar
-  export let coleccion = "articulos";  // articulos, clientes
+  export let coleccion = "armas";  // armas, soldados
   export let documento = {};
   
  
@@ -739,8 +739,8 @@ Este componente mostrará información acerca de la aplicación. Sólo posee có
     }
 
     switch (coleccion) {
-      case "articulos": url=URL.articulos; break;
-      case "clientes": url=URL.clientes; break;
+      case "armas": url=URL.armas; break;
+      case "soldados": url=URL.soldados; break;
       default:
     }
   });
@@ -810,7 +810,7 @@ Existen 3 mecanismos:
 
 #### Ejemplo
 
-**`Articulos.svelte`**
+**`Armas.svelte`**
 ```html
 <script>
     let texto = "camisa";
@@ -832,11 +832,11 @@ Existen 3 mecanismos:
 </label>
 ```
 
-Desde el componente padre `Articulos` pasamos el valor `camisa` a la propiedad `busqueda` del componente `Buscar`.
+Desde el componente padre `Armas` pasamos el valor `camisa` a la propiedad `busqueda` del componente `Buscar`.
 
 Por defecto, el sentido de la comunicación es Padre->Hijo. 
 
-Si deseamos que el hijo (`Buscar`) pueda pasar información al padre (`Articulos`) haremos uso de la directiva **`bind`** en el componente padre, que quedaría así:
+Si deseamos que el hijo (`Buscar`) pueda pasar información al padre (`Armas`) haremos uso de la directiva **`bind`** en el componente padre, que quedaría así:
 
 ```html
 <script>
@@ -865,9 +865,9 @@ El valor de la propiedad `busqueda`, que será modificada desde el componente `B
 <script>
   import { setContext } from "svelte";
 	
-  const urlArticulos = "https://tiendabackend.herokuapp.com/api/articulos/";
+  const urlArmas = "https://tiendabackend.herokuapp.com/api/armas/";
 
-  setContext("urlArticulos", urlArticulos);
+  setContext("urlArmas", urlArmas);
 </script>	
 ```
 
@@ -877,10 +877,10 @@ El valor de la propiedad `busqueda`, que será modificada desde el componente `B
 <script>
   import { getContext } from "svelte";
 	
-  const urlArticulos = getContext("urlArticulos");
+  const urlArmas = getContext("urlArmas");
 	
   function obtener() {
-      fetch(urlArticulos, { method: "GET" })
+      fetch(urlArmas, { method: "GET" })
       .then(res => res.json())
       .then(data => {  /* código para éxito */ })
       .catch(err => {  /* código para error */ });
@@ -908,21 +908,21 @@ export const jsonData = writable([]);
 Declaramos en `store.js` un array vacío, que contendrá datos en formato JSON.
 
 
-**`Articulos.svelte`**
+**`Armas.svelte`**
 
 ```html
 <script>
  import { jsonData }   from "./store.js";
 	
  onMount(async () => {
-    const response = await fetch( urlArticulos );
+    const response = await fetch( urlArmas );
     const data = await response.json();
     $jsonData = data;
   });
 </script>	
 ```
 
-En el componente `Articulos.svelte` hacemos una petición **fetch** al servidor y guardamos los datos en formato JSON en la variable jsonData del almacén. 
+En el componente `Armas.svelte` hacemos una petición **fetch** al servidor y guardamos los datos en formato JSON en la variable jsonData del almacén. 
 
 **Nota:** Observa que para referirnos a la variable del almacén lo hacemos como **$jsonData**.
 
@@ -935,7 +935,7 @@ En el componente `Articulos.svelte` hacemos una petición **fetch** al servidor 
   export let documento = {};
 	
   function insertar() {
-      fetch(urlArticulos, {
+      fetch(urlArmas, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(documento)
